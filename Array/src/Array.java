@@ -70,5 +70,16 @@ public class Array<E> {
         data = newData;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append(String.format("Array size: %d, Array capacity: %d\n", size, getCapacity()));
+        for (int i = 0; i < size; i++) {
+            str.append(data[i]);
+            str.append(" ");
+        }
+        return str.toString();
+    }
+
 
 }
