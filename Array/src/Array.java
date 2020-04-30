@@ -1,5 +1,5 @@
 /**
- * This is my own implementation of an array data structure that supports
+ * This is my implementation of an array data structure that supports
  * generic data type and it can dynamically maintain the size of the array.
  *
  * @author Zihao Deng
@@ -49,14 +49,94 @@ public class Array<E> {
         add(e, size);
     }
 
+    /* Return true if the array contains element e */
+    public boolean contains(E e) {
+        for (int i = 0; i < size; i++) {
+            if (data[i].equals(e)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /* Remove and return the element at the index position of the array */
+    public E remove(int index) {
+        if (index < 0 || index >= size) {
+            throw new IllegalArgumentException(String.format("Index should be between 0 and %d", size - 1));
+        }
+
+        E element = data[index];
+        for (int i = index + 1; i < size; i++) {
+            data[i - 1] = data[i];
+        }
+        data[size - 1] = null;
+        size--;
+
+        if (size == getCapacity() / 4 && getCapacity() / 2 != 0) {
+            resize(getCapacity() / 2);
+        }
+        return element;
+    }
+
+    /* Remove and return the first element of the array */
+    public E removeFirst() {
+        return remove(0);
+    }
+
+    /* Remove and return the last element of the array */
+    public E removeLast() {
+        return remove(size - 1);
+    }
+
+    /* Remove the the first appearance of e in the array if the array contains e
+    *  Return true if the removal is successful and false otherwise */
+    public boolean removeElement(E e){
+        int index = find(e);
+        if(index == -1) {
+            return false;
+        }
+        remove(index);
+        return true;
+    }
+
+    /* Return the index of the first element e in the array, and return -1
+    *  if the element is not found */
+    public int find(E e) {
+        for (int i = 0; i < size; i++) {
+            if (data[i].equals(e)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /* Return the element at the index position of the array */
+    public E get(int index) {
+        if (index < 0 || index >= size) {
+            throw new IllegalArgumentException(String.format("Index should be between 0 and %d", size - 1));
+        }
+        return data[index];
+    }
+
+    /* Set the element at the index position of the array to e */
+    public void set(int index, E e) {
+        if (index < 0 || index >= size) {
+            throw new IllegalArgumentException(String.format("Index should be between 0 and %d", size - 1));
+        }
+        data[index] = e;
+    }
+
+    /* Get the number of elements the array */
     public int getSize() {
         return size;
     }
 
+    /* Get the capacity of the array */
     public int getCapacity() {
         return data.length;
     }
 
+    /* Return true if the array is empty */
     public boolean isEmpty() {
         return size == 0;
     }
