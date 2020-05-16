@@ -1,17 +1,17 @@
 /**
- * This is my implementation of a bubble sort algorithm. The class supports
+ * This is my implementation of a quick sort algorithm. The class supports
  * generics.
  *
  * @author Zihao Deng
- * @since 2020-05-14
+ * @since 2020-05-15
  * @param <E> type parameter
  */
 
-public class BubbleSort<E extends Comparable<E>> implements Sort {
+public class QuickSort<E extends Comparable<E>> implements Sort {
 
     E[] data;
 
-    public BubbleSort(E[] arr) {
+    public QuickSort(E[] arr) {
 
         data = (E[]) new Comparable[arr.length];
         for (int i = 0; i < data.length; i++) {
@@ -26,20 +26,39 @@ public class BubbleSort<E extends Comparable<E>> implements Sort {
             throw new IllegalArgumentException("Fail! No data to sort!");
         }
 
-        for (int i = 0; i < data.length; i++) {
-            boolean isOrdered = true;
-            for (int j = 0; j < data.length - 1 - i; j++) {
-                if (data[j].compareTo(data[j + 1]) > 0) {
-                    E temp = data[j];
-                    data[j] = data[j + 1];
-                    data[j + 1] = temp;
-                    isOrdered = false;
-                }
+        quickSort(data, 0, data.length - 1);
+    }
+
+    private void quickSort(E[] arr, int start, int end) {
+
+        if (start >= end) { return; }
+
+        E pivot = arr[(start + end) / 2];
+
+        int left = start;
+        int right = end;
+
+        while (left <= right) {
+
+            while (left <= right && arr[left].compareTo(pivot) < 0) {
+                left++;
             }
-            if (isOrdered) {
-                break;
+
+            while (left <= right && arr[right].compareTo(pivot) > 0) {
+                right--;
+            }
+
+            if (left <= right) {
+                E temp = arr[left];
+                arr[left] = arr[right];
+                arr[right] = temp;
+                left++;
+                right--;
             }
         }
+
+        quickSort(arr, start, right);
+        quickSort(arr, left, end);
     }
 
     @Override
@@ -55,7 +74,7 @@ public class BubbleSort<E extends Comparable<E>> implements Sort {
         }
         str.append(data[data.length - 1]);
 
-        System.out.println("Bubble sort:");
+        System.out.println("Quick sort:");
         System.out.println(str.toString());
     }
 

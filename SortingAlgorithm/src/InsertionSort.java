@@ -1,17 +1,17 @@
 /**
- * This is my implementation of a bubble sort algorithm. The class supports
+ * This is my implementation of a insertion sort algorithm. The class supports
  * generics.
  *
  * @author Zihao Deng
- * @since 2020-05-14
+ * @since 2020-05-15
  * @param <E> type parameter
  */
 
-public class BubbleSort<E extends Comparable<E>> implements Sort {
+public class InsertionSort<E extends Comparable<E>> implements Sort {
 
     E[] data;
 
-    public BubbleSort(E[] arr) {
+    public InsertionSort(E[] arr) {
 
         data = (E[]) new Comparable[arr.length];
         for (int i = 0; i < data.length; i++) {
@@ -26,19 +26,14 @@ public class BubbleSort<E extends Comparable<E>> implements Sort {
             throw new IllegalArgumentException("Fail! No data to sort!");
         }
 
-        for (int i = 0; i < data.length; i++) {
-            boolean isOrdered = true;
-            for (int j = 0; j < data.length - 1 - i; j++) {
-                if (data[j].compareTo(data[j + 1]) > 0) {
-                    E temp = data[j];
-                    data[j] = data[j + 1];
-                    data[j + 1] = temp;
-                    isOrdered = false;
-                }
+        for (int i = 1; i < data.length; i++) {
+            int prevIndex = i - 1;
+            E toInsert = data[i];
+            while (prevIndex >= 0 && data[prevIndex].compareTo(toInsert) > 0) {
+                data[prevIndex + 1] = data[prevIndex];
+                prevIndex--;
             }
-            if (isOrdered) {
-                break;
-            }
+            data[prevIndex + 1] = toInsert;
         }
     }
 
@@ -55,7 +50,7 @@ public class BubbleSort<E extends Comparable<E>> implements Sort {
         }
         str.append(data[data.length - 1]);
 
-        System.out.println("Bubble sort:");
+        System.out.println("Insertion sort:");
         System.out.println(str.toString());
     }
 
